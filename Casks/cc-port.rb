@@ -4,22 +4,22 @@ cask "cc-port" do
 
   on_macos do
     on_intel do
-      sha256 "8ee60674dbced5b9cab2af9e5faddc6625e585ed87128f179666f56dde03b2c0"
+      sha256 "6da59f555a379c6e70ac5ade251534127794012d90db96e2aa5e5ea4e4a4a26b"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_darwin_amd64.tar.gz"
     end
     on_arm do
-      sha256 "856e6eafe6a5434c06c0cf5a4a9c68278f4a6c17005bcfe79390beef3bbaf906"
+      sha256 "80ea15ebddd1b06d2fdba06e24ff2ead7eeec17602cac4ce2d77d2702262df68"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_darwin_arm64.tar.gz"
     end
   end
 
   on_linux do
     on_intel do
-      sha256 "6f6f99babe7e8b840c6c10d7bdbda77628df39cb75baa0986f48ae00e717ece9"
+      sha256 "ebbe0ab4279ad3301f9651a0b424c88f7cc47ebd5d0b4d62ed02ae85f15140cd"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_linux_amd64.tar.gz"
     end
     on_arm do
-      sha256 "b0335300af626787da51061387f7a7939d833b24af42aff94ddd8d69c819a93c"
+      sha256 "73fe4a07fb19c492d2fbb306609afb2f084bca9f3ffdb30e43bf7fa53336da08"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_linux_arm64.tar.gz"
     end
   end
