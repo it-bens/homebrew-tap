@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Homebrew/actions has no tagged releases; pin the head of `main`.
+      - uses: Homebrew/actions/setup-homebrew@98cfa07b984a61682e6cd3a0833fad2006cc84ba # main @ 2026-04-17
+
+      - name: brew style
+        run: brew style it-bens/tap
+
+      - name: brew audit
+        run: brew audit --strict --tap=it-bens/tap
