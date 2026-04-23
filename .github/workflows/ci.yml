@@ -17,8 +17,22 @@ jobs:
       # Homebrew/actions has no tagged releases; pin the head of `main`.
       - uses: Homebrew/actions/setup-homebrew@98cfa07b984a61682e6cd3a0833fad2006cc84ba # main @ 2026-04-17
 
+      # `brew style <tap>` on an empty tap falls back to linting the tap root
+      # and parses README.md as Ruby. Skip until goreleaser populates Formula/.
+      - name: Check for formulas
+        id: formulas
+        run: |
+          if compgen -G 'Formula/*.rb' > /dev/null; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No formulas yet — skipping style/audit."
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: brew style
+        if: steps.formulas.outputs.present == 'true'
         run: brew style it-bens/tap
 
       - name: brew audit
+        if: steps.formulas.outputs.present == 'true'
         run: brew audit --strict --tap=it-bens/tap
