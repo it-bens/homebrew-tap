@@ -4,22 +4,22 @@ cask "cc-port" do
 
   on_macos do
     on_intel do
-      sha256 "bcb667a591525a59aa4a4f5970378af6ab7021bdcff25aa16159cf23e4d25175"
+      sha256 "8ee60674dbced5b9cab2af9e5faddc6625e585ed87128f179666f56dde03b2c0"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_darwin_amd64.tar.gz"
     end
     on_arm do
-      sha256 "d5a0badb67c1eebbb8c57674ddc53c63cacfb7aa8db75f58ae14b22954170c72"
+      sha256 "856e6eafe6a5434c06c0cf5a4a9c68278f4a6c17005bcfe79390beef3bbaf906"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_darwin_arm64.tar.gz"
     end
   end
 
   on_linux do
     on_intel do
-      sha256 "7e71796fd5e3b130fc268ed014d03f882360b06becdf9e215661d582ede194be"
+      sha256 "6f6f99babe7e8b840c6c10d7bdbda77628df39cb75baa0986f48ae00e717ece9"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_linux_amd64.tar.gz"
     end
     on_arm do
-      sha256 "8006384394724762a4ad1b317cade9db23079c9b2e5677faeabab2d69fe4e0a6"
+      sha256 "b0335300af626787da51061387f7a7939d833b24af42aff94ddd8d69c819a93c"
       url "https://github.com/it-bens/cc-port/releases/download/v#{version}/cc-port_linux_arm64.tar.gz"
     end
   end
@@ -35,11 +35,11 @@ cask "cc-port" do
   binary "cc-port"
 
   postflight do
-    if OS.mac?
-      system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/cc-port"]
-    end
+    system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/cc-port"] if OS.mac?
   end
 
-  # No zap stanza required
+  zap trash: [
+      "~/.claude/.cc-port.lock",
+    ]
 
 end
