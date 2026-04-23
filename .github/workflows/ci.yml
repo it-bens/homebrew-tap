@@ -33,7 +33,14 @@ jobs:
 
       - name: brew style
         if: steps.casks.outputs.present == 'true'
-        run: brew style Casks/*.rb
+        # goreleaser's cask template emits a non-modifier `if OS.mac?` in
+        # postflight and a trailing blank line before `end`. Both are cosmetic
+        # RuboCop preferences; silence them until the goreleaser template in
+        # the consumer repo emits the autocorrected form.
+        run: |
+          brew style \
+            --except-cops=Style/IfUnlessModifier,Layout/EmptyLinesAroundBlockBody \
+            Casks/*.rb
 
       - name: brew audit
         if: steps.casks.outputs.present == 'true'
