@@ -1,11 +1,11 @@
 # it-bens Homebrew tap
 
-Homebrew tap for [`it-bens`](https://github.com/it-bens) projects. Formulas under `Formula/` are auto-updated by each project's release pipeline (goreleaser); manual edits will be overwritten.
+Homebrew tap for [`it-bens`](https://github.com/it-bens) projects. Casks under `Casks/` are auto-updated by each project's release pipeline (goreleaser); manual edits will be overwritten. The casks are macOS-only.
 
 ## Install
 
 ```
-brew install it-bens/tap/<formula>
+brew install it-bens/tap/<name>
 ```
 
 For example:
@@ -14,6 +14,6 @@ For example:
 brew install it-bens/tap/cc-port
 ```
 
-## Formulas
+## Casks
 
-- [`cc-port`](Formula/cc-port.rb) — Claude Code project portability tool ([source](https://github.com/it-bens/cc-port))
+- [`cc-port`](Casks/cc-port.rb) — Claude Code project portability tool ([source](https://github.com/it-bens/cc-port))

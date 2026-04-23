@@ -17,25 +17,24 @@ jobs:
       # Homebrew/actions has no tagged releases; pin the head of `main`.
       - uses: Homebrew/actions/setup-homebrew@98cfa07b984a61682e6cd3a0833fad2006cc84ba # main @ 2026-04-17
 
-      # `brew style <tap>` also runs RuboCop over non-Ruby tap files (README,
-      # LICENSE), where fenced snippets like `it-bens/tap/cc-port` get parsed
-      # as Ruby and flagged for ambiguous `-` / `/` precedence. Scoping to
-      # Formula/*.rb keeps the lint on actual formulas. `brew audit` is
-      # already formula-scoped, so it runs tap-wide as usual.
-      - name: Check for formulas
-        id: formulas
+      # Scope `brew style` to Casks/*.rb so RuboCop only sees Ruby; running
+      # it against the whole tap also lints README.md and fails on fenced
+      # snippets like `it-bens/tap/cc-port` (ambiguous `-` / `/` precedence).
+      # `brew audit` is item-scoped and is safe to run tap-wide.
+      - name: Check for casks
+        id: casks
         run: |
-          if compgen -G 'Formula/*.rb' > /dev/null; then
+          if compgen -G 'Casks/*.rb' > /dev/null; then
             echo "present=true" >> "$GITHUB_OUTPUT"
           else
-            echo "No formulas yet — skipping style/audit."
+            echo "No casks yet — skipping style/audit."
             echo "present=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: brew style
-        if: steps.formulas.outputs.present == 'true'
-        run: brew style Formula/*.rb
+        if: steps.casks.outputs.present == 'true'
+        run: brew style Casks/*.rb
 
       - name: brew audit
-        if: steps.formulas.outputs.present == 'true'
-        run: brew audit --strict --tap=it-bens/tap
+        if: steps.casks.outputs.present == 'true'
+        run: brew audit --strict --cask --tap=it-bens/tap
