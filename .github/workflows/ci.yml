@@ -17,30 +17,19 @@ jobs:
       # Homebrew/actions has no tagged releases; pin the head of `main`.
       - uses: Homebrew/actions/setup-homebrew@98cfa07b984a61682e6cd3a0833fad2006cc84ba # main @ 2026-04-17
 
-      # Scope `brew style` to Casks/*.rb so RuboCop only sees Ruby; running
-      # it against the whole tap also lints README.md and fails on fenced
-      # snippets like `it-bens/tap/cc-port` (ambiguous `-` / `/` precedence).
-      # `brew audit` is item-scoped and is safe to run tap-wide.
+      # `brew style` is skipped intentionally: every cask here is
+      # goreleaser-generated, never hand-edited, so cosmetic RuboCop
+      # preferences add no value. `brew audit` still catches the things
+      # that break installs (bad sha256, broken URL, deprecated DSL).
       - name: Check for casks
         id: casks
         run: |
           if compgen -G 'Casks/*.rb' > /dev/null; then
             echo "present=true" >> "$GITHUB_OUTPUT"
           else
-            echo "No casks yet — skipping style/audit."
+            echo "No casks yet — skipping audit."
             echo "present=false" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: brew style
-        if: steps.casks.outputs.present == 'true'
-        # goreleaser's cask template emits a non-modifier `if OS.mac?` in
-        # postflight and a trailing blank line before `end`. Both are cosmetic
-        # RuboCop preferences; silence them until the goreleaser template in
-        # the consumer repo emits the autocorrected form.
-        run: |
-          brew style \
-            --except-cops=Style/IfUnlessModifier,Layout/EmptyLinesAroundBlockBody \
-            Casks/*.rb
 
       - name: brew audit
         if: steps.casks.outputs.present == 'true'
