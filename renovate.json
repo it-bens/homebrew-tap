@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
+  "enabledManagers": ["github-actions", "custom.regex"],
+  "schedule": ["* * * * 6"],
+  "timezone": "Europe/Berlin",
+  "minimumReleaseAge": "7 days",
+  "configMigration": true,
+  "customManagers": [
+    {
+      "description": "Homebrew/actions tags are four-part dates (2026.10.19.1); the github-actions manager truncates them to three parts.",
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "uses:\\s*(?<depName>Homebrew/actions)/[^@\\s]+@(?<currentDigest>[a-f0-9]{40})\\s+#\\s*(?<currentValue>\\d{4}\\.\\d{2}\\.\\d{2}\\.\\d+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$"
+    }
+  ],
+  "packageRules": [
+    { "matchManagers": ["github-actions"], "matchPackageNames": ["Homebrew/actions"], "enabled": false },
+    { "matchManagers": ["github-actions"], "matchUpdateTypes": ["minor", "patch", "digest"], "groupName": "github-actions (non-major)" }
+  ]
+}
